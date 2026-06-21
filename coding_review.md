@@ -1,13 +1,5 @@
 # Secure Coding Review & Source Code Audit Report
 
-> **Target Language:** Python  
-> **Framework:** Flask  
-> **Reviewed Files:** `vulnerable_login.py` and `secure_login.py`  
-> **Report Type:** Secure Coding Review / Source Code Audit  
-> **Purpose:** Educational security analysis only
-
----
-
 ## 1. Vulnerable Code Analysis — `vulnerable_login.py`
 
 The file `vulnerable_login.py` is an intentionally insecure Flask login application.  
@@ -766,61 +758,3 @@ Production environments can run safely without exposing debug features.
 
 ---
 
-## 5. Vulnerable vs Secure Comparison Table
-
-| Security Area | Vulnerable Version | Secure Version |
-|---|---|---|
-| Secret Key | Hardcoded in code | Loaded from environment |
-| DB Config | Hardcoded values | Uses environment variable |
-| Password Hashing | MD5 without salt | PBKDF2-SHA256 with salt |
-| Login Query | SQL string formatting | Parameterized query |
-| Registration Query | SQL string formatting | Parameterized insert |
-| Session Handling | Plain cookie | Flask session |
-| Error Messages | Reveals internals | Generic messages |
-| Input Validation | Missing | Added validation |
-| Password Policy | Very weak | Enforced complexity |
-| Upload Access | Public endpoint | Requires login |
-| File Upload | Any filename and type | Allowed extensions + secure filename |
-| File Size | No limit | 2 MB limit |
-| Debug Mode | Always enabled | Controlled by environment |
-
----
-
-## 6. Remediation Summary
-
-The vulnerable application should be remediated using the same security controls applied in `secure_login.py`.
-
-Recommended remediation steps:
-
-1. Remove all hardcoded secrets and credentials.
-2. Use environment variables for configuration.
-3. Replace MD5 hashing with PBKDF2, bcrypt, scrypt, or Argon2.
-4. Replace all SQL string formatting with parameterized queries.
-5. Use proper session management instead of manually storing usernames in cookies.
-6. Validate and sanitize all user inputs.
-7. Use generic error messages.
-8. Enforce password complexity rules.
-9. Protect sensitive routes with authentication checks.
-10. Restrict file upload extensions.
-11. Sanitize uploaded filenames.
-12. Add file size limits.
-13. Disable debug mode in production.
-
----
-
-## 7. Final Conclusion
-
-The reviewed application demonstrates the difference between insecure and secure coding practices in a Flask login system.
-
-The vulnerable version contains several critical issues such as SQL Injection, weak password hashing, hardcoded secrets, insecure cookies, unrestricted file uploads, and debug mode exposure.
-
-The secure version fixes these issues by applying secure coding best practices such as parameterized queries, strong password hashing, environment-based configuration, proper sessions, input validation, safe file upload handling, and safer runtime settings.
-
-This review shows why secure coding is important and how small coding decisions can strongly affect the security of a web application.
-
----
-
-## 8. Ethical Note
-
-This audit is for educational and defensive purposes only.  
-Code review and security testing should only be performed on applications that you own or have explicit permission to analyze.
